@@ -2,6 +2,10 @@ package de.hsos.swe.afairstart.boundary.rest;
 
 import de.hsos.swe.afairstart.entity.Booking;
 
+import java.util.Date;
+import java.sql.Time;
+
+
 public class bookingRessource {
     int getTime (int userID, int deviceID, int processTime){
         return 0;
