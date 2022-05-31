@@ -1,21 +1,22 @@
-package de.hsos.swe.afairstart.boundary.rest;
+package de.hsos.swe.afairstart.booking.boundary.rest;
 
-import de.hsos.swe.afairstart.entity.Booking;
+import de.hsos.swe.afairstart.booking.entity.Booking;
 
 import java.util.Date;
 import java.sql.Time;
 
 
-public class bookingRessource {
+public class BookingResource {
+    //TODO: Response als Rückgabetyp
     int getTime (int userID, int deviceID, int processTime){
         return 0;
     }
     
-    boolean logOn (int booingID){
+    boolean logOn (int bookingID){
         return false;
     }
     
-    boolean logOff (int booingID){
+    boolean logOff (int bookingID){
         return false;
     }
     

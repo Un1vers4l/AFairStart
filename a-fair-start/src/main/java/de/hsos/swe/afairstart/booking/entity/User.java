@@ -1,10 +1,10 @@
 package de.hsos.swe.afairstart.entity;
 
-import java.util.HashSet;
+import java.util.HashMap;
 
 public class User {
     private int userID;
     private String name;
     private UserRole role;
-    private HashSet<DeviceTyp, int> deviceLevel;
+    private HashMap<DeviceType, Integer> deviceLevel = new HashMap<DeviceType, Integer>();
 }
