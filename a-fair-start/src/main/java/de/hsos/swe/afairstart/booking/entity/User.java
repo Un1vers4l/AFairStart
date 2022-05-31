@@ -1,4 +1,4 @@
-package de.hsos.swe.afairstart.entity;
+package de.hsos.swe.afairstart.booking.entity;
 
 import java.util.HashMap;
 

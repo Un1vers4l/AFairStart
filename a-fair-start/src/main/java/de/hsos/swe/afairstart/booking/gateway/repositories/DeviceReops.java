@@ -1,4 +1,4 @@
-package de.hsos.swe.afairstart.gateway.repositories;
+package de.hsos.swe.afairstart.booking.gateway.repositories;
 
 import de.hsos.swe.afairstart.booking.control.DeviceService;
 import de.hsos.swe.afairstart.booking.entity.Device;

@@ -1,10 +1,10 @@
-package de.hsos.swe.afairstart.gateway.repositories;
+package de.hsos.swe.afairstart.booking.gateway.repositories;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-import de.hsos.swe.afairstart.control.BookingService;
-import de.hsos.swe.afairstart.entity.Booking;
+import de.hsos.swe.afairstart.booking.control.BookingService;
+import de.hsos.swe.afairstart.booking.entity.Booking;
 
 public class BookingRepos implements BookingService {
     @Override

@@ -1,4 +1,4 @@
-package de.hsos.swe.afairstart.gateway;
+package de.hsos.swe.afairstart.booking.gateway;
 
 public class NeuralNetworkConnector {
     

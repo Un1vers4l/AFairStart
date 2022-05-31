@@ -1,6 +1,6 @@
-package de.hsos.swe.afairstart.gateway.repositories;
-import de.hsos.swe.afairstart.control.UserService;
-import de.hsos.swe.afairstart.entity.User;
+package de.hsos.swe.afairstart.booking.gateway.repositories;
+import de.hsos.swe.afairstart.booking.control.UserService;
+import de.hsos.swe.afairstart.booking.entity.User;
 
 public class UserRepos implements UserService{
 

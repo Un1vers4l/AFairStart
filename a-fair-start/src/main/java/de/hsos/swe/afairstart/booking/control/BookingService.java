@@ -1,9 +1,9 @@
-package de.hsos.swe.afairstart.control;
+package de.hsos.swe.afairstart.booking.control;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-import de.hsos.swe.afairstart.entity.Booking;
+import de.hsos.swe.afairstart.booking.entity.Booking;
 
 public interface BookingService {
     public Booking createBooking(int userID, int deviceID, LocalTime bookingTime, LocalDate bookingDate, int calculatedDuration);

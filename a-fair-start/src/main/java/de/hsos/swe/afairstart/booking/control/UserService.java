@@ -1,6 +1,6 @@
-package de.hsos.swe.afairstart.control;
+package de.hsos.swe.afairstart.booking.control;
 
-import de.hsos.swe.afairstart.entity.User;
+import de.hsos.swe.afairstart.booking.entity.User;
 
 public interface UserService {
     public User getUser (int userID);
