@@ -28,9 +28,13 @@
     </dependencies>
   </dependencyManagement>
   <dependencies>
+  <dependency>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-resteasy</artifactId>
+    </dependency>
     <dependency>
       <groupId>io.quarkus</groupId>
-      <artifactId>quarkus-resteasy-reactive-jaxb</artifactId>
+      <artifactId>quarkus-resteasy-jsonb</artifactId>
     </dependency>
     <dependency>
       <groupId>io.quarkus</groupId>
@@ -46,10 +50,6 @@
     </dependency>
     <dependency>
       <groupId>io.quarkus</groupId>
-      <artifactId>quarkus-resteasy-reactive</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>io.quarkus</groupId>
       <artifactId>quarkus-junit5</artifactId>
       <scope>test</scope>
     </dependency>
@@ -58,6 +58,16 @@
       <artifactId>rest-assured</artifactId>
       <scope>test</scope>
     </dependency>
+    <!-- Hibernate ORM specific dependencies -->
+<dependency>
+    <groupId>io.quarkus</groupId>
+    <artifactId>quarkus-hibernate-orm</artifactId>
+</dependency>
+   <dependency>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-jdbc-postgresql</artifactId>
+    </dependency>
+
   </dependencies>
   <build>
     <plugins>
