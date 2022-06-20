@@ -1,0 +1,41 @@
+{@de.hsos.swe.afairstartnew.bookings.entity.BookingExportDTO booking}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Bookings Details</title>
+</head>
+<body>
+    <h1>Bookings Details</h1>
+    <a href="/">Menu</a>
+    <form method="post">
+        <label for="id">Id:</label>
+        <input type="number" name="id" id="id" value="{booking.getId()}" readonly> <br>
+        <label for="user">User:</label>
+        <input type="text" id="user" value="{booking.getUser()}" readonly> <br>
+        <label for="deviceId">Device Id:</label>
+        <input type="text" name="deviceId" id="deviceId" min="1" placeholder="{booking.getDeviceId()}" required> <br>
+        <label for="scheduledStart">Scheduled Start:</label>
+        <input type="text" name="scheduledStart" id="scheduledStart" placeholder="{booking.getScheduledStart()}" required> <br>
+        <label for="intendedDuration">Intended Duration:</label>
+        <input type="number" name="intendedDuration" id="intendedDuration" placeholder="{booking.getIntendedDuration()}" required> <br>
+        <label for="expectedDuration">Expected Duration:</label>
+        <input type="number" id="expectedDuration" value="{booking.getExpectedDuration()}" readonly> <br>
+        <label for="actualDuration">Actual Duration:</label>
+        <input type="number" id="actualDuration" value="{booking.getActualDuration()}" readonly> <br>
+        <button type="submit" name="submit" disabled>Update</button>
+    </form>
+    <form action="/bookings/{booking.getId()}/checkIn" method="post">
+        <button type="submit" name="submit">Delete</button>
+    </form>
+    <form action="/bookings/{booking.getId()}/checkOut" method="post">
+        <button type="submit" name="submit">Delete</button>
+    </form>
+    <form action="/bookings/{booking.getId()}/delete" method="post">
+        <button type="submit" name="submit">Delete</button>
+    </form>
+</body>
+</html>
