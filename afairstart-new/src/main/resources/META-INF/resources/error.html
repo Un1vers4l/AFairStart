@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Login</title>
+</head>
+<body>
+    <h1>Login</h1>
+    <p style="border: solid 1px red; color: red">Login failed</p>
+    <form action="/j_security_check" method="post">
+        <label for="username">Username:</label>
+        <input type="text" name="j_username" id="username" placeholder="admin"> <br>
+        <label for="password">Password:</label>
+        <input type="password" name="j_password" id="password" placeholder="admin"> <br>
+        <input type="submit" value="Login">
+    </form>
+</body>
+</html>

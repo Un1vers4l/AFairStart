@@ -1,0 +1,31 @@
+{@java.util.List<de.hsos.swe.afairstartnew.bookings.entity.BookingExportDTO> bookings}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Bookings List</title>
+</head>
+<body>
+    <h1>Bookings List</h1>
+    <a href="/">Menu</a>
+    <ul>
+        {#for booking in bookings}
+            <li>
+                <a href="/bookings/{booking.getId()}">{booking.toString()}</a>
+            </li>
+        {/for}
+        <form method="post">
+            <label for="deviceId">Device Id:</label>
+            <input type="number" name="deviceId" id="deviceId" min="1" required> <br>
+            <label for="scheduledStart">Scheduled Start:</label>
+            <input type="text" name="scheduledStart" id="scheduledStart" required> <br>
+            <label for="intendedDuration">Intended Duration:</label>
+            <input type="number" name="intendedDuration" id="intendedDuration" required> <br>
+            <button type="submit" name="submit">Create</button>
+        </form>
+    </ul>
+</body>
+</html>
