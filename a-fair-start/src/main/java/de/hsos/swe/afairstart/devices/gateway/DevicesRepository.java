@@ -4,11 +4,16 @@ import de.hsos.swe.afairstart.devices.control.DevicesService;
 import de.hsos.swe.afairstart.devices.entity.Device;
 import de.hsos.swe.afairstart.devices.entity.DeviceExportDTO;
 import de.hsos.swe.afairstart.devices.entity.DeviceImportDTO;
+import de.hsos.swe.afairstart.devices.entity.DeviceType;
+import de.hsos.swe.afairstart.users.entity.User;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.event.Observes;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -73,5 +78,15 @@ public class DevicesRepository implements DevicesService {
         } else {
             return false;
         }
+    }
+
+    @Override
+    public void addDeviceExperience(@Observes User user){
+        Map<DeviceType, Long> deviceExperience = user.getDeviceExpericence();
+        for(DeviceType type : DeviceType.values()){
+            deviceExperience.putIfAbsent(type, Long.valueOf(1));
+            user.pushBooking(Long.valueOf(1), type);    
+        }
+        user.setDeviceExpericence(deviceExperience);
     }
 }

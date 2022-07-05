@@ -9,7 +9,6 @@ import io.quarkus.security.jpa.Username;
 import javax.enterprise.inject.Vetoed;
 import javax.persistence.*;
 
-import de.hsos.swe.afairstart.bookings.entity.Booking;
 import de.hsos.swe.afairstart.devices.entity.DeviceType;
 
 import java.util.ArrayDeque;

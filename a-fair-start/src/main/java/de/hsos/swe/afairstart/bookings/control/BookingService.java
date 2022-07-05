@@ -3,6 +3,7 @@ package de.hsos.swe.afairstart.bookings.control;
 import java.util.List;
 import java.util.Optional;
 
+import de.hsos.swe.afairstart.bookings.entity.Booking;
 import de.hsos.swe.afairstart.bookings.entity.BookingExportDTO;
 import de.hsos.swe.afairstart.bookings.entity.BookingImportDTO;
 import de.hsos.swe.afairstart.bookings.entity.NeuralDAO;
@@ -21,5 +22,5 @@ public interface BookingService {
 
     boolean checkOut(Long id);
 
-    NeuralDAO createNeuralDAO(Long id);
+    NeuralDAO createNeuralDAO(Booking booking);
 }

@@ -1,5 +1,6 @@
 package de.hsos.swe.afairstart.users.control;
 
+import de.hsos.swe.afairstart.devices.entity.DeviceExperienceDTO;
 import de.hsos.swe.afairstart.users.entity.User;
 import de.hsos.swe.afairstart.users.entity.UserExportDTO;
 import de.hsos.swe.afairstart.users.entity.UserImportDTO;
@@ -20,6 +21,8 @@ public interface UserService {
     public Optional<UserExportDTO> create(UserImportDTO importDTO);
 
     public Optional<UserExportDTO> update(UserImportDTO importDTO);
+
+    public Optional<UserExportDTO> update(String username, DeviceExperienceDTO experienceDTO);
 
     public boolean delete(String username);
 }

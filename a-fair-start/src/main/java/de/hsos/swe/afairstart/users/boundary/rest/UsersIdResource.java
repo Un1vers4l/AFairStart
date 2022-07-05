@@ -1,5 +1,6 @@
 package de.hsos.swe.afairstart.users.boundary.rest;
 
+import de.hsos.swe.afairstart.devices.entity.DeviceExperienceDTO;
 import de.hsos.swe.afairstart.users.control.UserService;
 import de.hsos.swe.afairstart.users.entity.UserExportDTO;
 import de.hsos.swe.afairstart.users.entity.UserImportDTO;
@@ -62,5 +63,16 @@ public class UsersIdResource {
         } else {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
+    }
+
+    @PATCH
+    @Transactional
+    public Response update(@PathParam("username") String username, DeviceExperienceDTO experienceDTO){
+        Optional<UserExportDTO> user = userService.update(username, experienceDTO);
+        if (user.isPresent()) {
+            return Response.ok(user.get()).build();
+        } else {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }   
     }
 }

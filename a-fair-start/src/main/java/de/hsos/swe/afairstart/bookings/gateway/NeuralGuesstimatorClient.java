@@ -34,7 +34,6 @@ public class NeuralGuesstimatorClient {
     UsersRepository userRepo;
 
     public Long getExpectedDuration(NeuralDAO neuralDAO){
-
         long intendedDuration = neuralDAO.intendedDuration;
         long level = neuralDAO.level;
         ArrayDeque<Long> recentBookings = neuralDAO.recentBookings;

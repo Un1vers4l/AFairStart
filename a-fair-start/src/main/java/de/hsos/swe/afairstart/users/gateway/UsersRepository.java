@@ -1,11 +1,14 @@
 package de.hsos.swe.afairstart.users.gateway;
 
+import de.hsos.swe.afairstart.devices.entity.DeviceExperienceDTO;
+import de.hsos.swe.afairstart.devices.entity.DeviceType;
 import de.hsos.swe.afairstart.users.control.UserService;
 import de.hsos.swe.afairstart.users.entity.User;
 import de.hsos.swe.afairstart.users.entity.UserExportDTO;
 import de.hsos.swe.afairstart.users.entity.UserImportDTO;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.event.Event;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import java.util.List;
@@ -17,6 +20,9 @@ import java.util.stream.Stream;
 public class UsersRepository implements UserService {
 
     private final EntityManager entityManager;
+
+    @Inject
+    Event<User> devices;
 
     @Inject
     public UsersRepository(EntityManager entityManager) {
@@ -43,6 +49,7 @@ public class UsersRepository implements UserService {
     @Override
     public Optional<UserExportDTO> create(UserImportDTO importDTO) {
         User user = importDTO.toEntity();
+        devices.fire(user);
         entityManager.persist(user);
         return Optional.of(user).map(UserExportDTO::new);
     }
@@ -72,4 +79,14 @@ public class UsersRepository implements UserService {
         }
     }
 
+    @Override
+    public Optional<UserExportDTO> update(String username, DeviceExperienceDTO experienceDTO){
+        User user = getUser(username).orElse(null);
+        if (user != null) {
+            user.getDeviceExpericence().put(experienceDTO.getType(), experienceDTO.getLevel());   
+            return Optional.of(entityManager.merge(user)).map(UserExportDTO::new);
+        } else {
+            return Optional.empty();
+        }
+    }
 }

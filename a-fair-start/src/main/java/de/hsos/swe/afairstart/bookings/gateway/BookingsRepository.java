@@ -6,13 +6,9 @@ import de.hsos.swe.afairstart.bookings.entity.BookingExportDTO;
 import de.hsos.swe.afairstart.bookings.entity.BookingImportDTO;
 import de.hsos.swe.afairstart.bookings.entity.NeuralDAO;
 import de.hsos.swe.afairstart.devices.entity.Device;
-import de.hsos.swe.afairstart.devices.entity.DeviceType;
 import de.hsos.swe.afairstart.users.entity.User;
 
-import org.eclipse.microprofile.rest.client.inject.RestClient;
-
 import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import java.time.LocalDateTime;
 import java.util.ArrayDeque;
@@ -66,7 +62,7 @@ public class BookingsRepository implements BookingService {
         Booking booking = importDTO.toEntity();
         booking.setUser(username);
 
-        booking.setExpectedDuration(neuralGuesstimatorClient.getExpectedDuration(this.createNeuralDAO(booking.getId())));
+        booking.setExpectedDuration(neuralGuesstimatorClient.getExpectedDuration(this.createNeuralDAO(booking)));
         long duration = Math.max(booking.getIntendedDuration(), booking.getExpectedDuration());
         LocalDateTime endTime = booking.getScheduledStart().plusMinutes(duration);
         Optional<Booking> existingBooking = entityManager
@@ -130,8 +126,8 @@ public class BookingsRepository implements BookingService {
     }
 
     @Override
-    public NeuralDAO createNeuralDAO(Long id){
-        Booking booking = getBooking(id).orElse(null);
+    public NeuralDAO createNeuralDAO(Booking booking){
+        if(booking == null) return null;
         Device device = entityManager.find(Device.class, booking.getDeviceId());
         User user = entityManager.find(User.class, booking.getUser());
         ArrayDeque<Long> bookings = user.getRecentBookingsDuration().get(device.getType());
