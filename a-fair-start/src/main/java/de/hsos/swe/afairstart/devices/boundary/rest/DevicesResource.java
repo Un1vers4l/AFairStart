@@ -38,7 +38,7 @@ public class DevicesResource {
     @GET
     @RolesAllowed({ "user", "admin" })
     public Response get(@QueryParam("type") String type) {
-        if (type == null || type.isEmpty()) {
+        if (type == null) {
             return Response.ok(dRepository.list()).build();
         } else {
             return Response.ok(dRepository.list(type)).build();

@@ -1,5 +1,6 @@
 package de.hsos.swe.afairstart.devices.entity;
 
 public enum DeviceType {
-    ThreeDimensionalPrinter, Printer
+    ThreeDimensionalPrinter, Printer, Unknown;
+
 }

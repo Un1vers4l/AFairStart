@@ -1,0 +1,25 @@
+{@de.hsos.swe.abetterstart.devices.entity.DeviceExportDTO device}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Devices Details</title>
+</head>
+<body>
+    <h1>Devices Details</h1>
+    <a href="/">Menu</a>
+    <form method="post">
+        <label for="id">Id:</label>
+        <input type="text" name="id" id="id" value="{device.getId()}" readonly> <br>
+        <label for="type">Type:</label>
+        <input type="text" name="type" id="type" min="1" placeholder="{device.getType()}" required> <br>
+        <button type="submit" name="submit">Update</button>
+    </form>
+    <form action="/devices/{device.getId()}/delete" method="post">
+        <button type="submit" name="submit">Delete</button>
+    </form>
+</body>
+</html>

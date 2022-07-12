@@ -34,9 +34,12 @@ public class DevicesRepository implements DevicesService {
     }
 
     public List<DeviceExportDTO> list(String type) {
-        return entityManager.createQuery("SELECT d FROM Device d WHERE d.type = :type", Device.class)
-                .setParameter("type", type)
-                .getResultStream().map(DeviceExportDTO::new).collect(Collectors.toList());
+        if (DeviceType.valueOf(type) != null) {
+            return entityManager.createQuery("SELECT d FROM Device d WHERE d.type = :type", Device.class)
+                    .setParameter("type", DeviceType.valueOf(type))
+                    .getResultStream().map(DeviceExportDTO::new).collect(Collectors.toList());
+        }
+        return null;
     }
 
     private Optional<Device> getDevice(long id) {
@@ -81,11 +84,11 @@ public class DevicesRepository implements DevicesService {
     }
 
     @Override
-    public void addDeviceExperience(@Observes User user){
+    public void addDeviceExperience(@Observes User user) {
         Map<DeviceType, Long> deviceExperience = user.getDeviceExpericence();
-        for(DeviceType type : DeviceType.values()){
+        for (DeviceType type : DeviceType.values()) {
             deviceExperience.putIfAbsent(type, Long.valueOf(1));
-            user.pushBooking(Long.valueOf(1), type);    
+            user.pushBooking(Long.valueOf(1), type);
         }
         user.setDeviceExpericence(deviceExperience);
     }
