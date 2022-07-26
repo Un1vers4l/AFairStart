@@ -37,16 +37,25 @@ public class BookingsResource {
     }
 
     @GET
-    public Response get() {
-        // Show admins all bookings, instead of their own
-        if (securityContext.isUserInRole("admin")) {
-            return Response.ok(bRepository.list("admin")).build();
+    public Response get(@QueryParam("type") String type, @QueryParam("date") boolean date) {
+        if (type == null && date == false) {
+            // Show admins all bookings, instead of their own
+            if (securityContext.isUserInRole("admin")) {
+                return Response.ok(bRepository.list("admin")).build();
+            }
+            // Show users their own bookings
+            else {
+                String username = securityContext.getUserPrincipal().getName();
+                return Response.ok(bRepository.list(username)).build();
+            }
+        } else if (type != null && date == true) {
+
+            return Response.ok(bRepository.list(type, date)).build();
+        } else if (type == null && date == true) {
+            // Show current Bookings
+            return Response.ok(bRepository.list(type, date)).build();
         }
-        // Show users their own bookings
-        else {
-            String username = securityContext.getUserPrincipal().getName();
-            return Response.ok(bRepository.list(username)).build();
-        }
+        return null;
     }
 
     @POST
@@ -61,4 +70,5 @@ public class BookingsResource {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
     }
+
 }

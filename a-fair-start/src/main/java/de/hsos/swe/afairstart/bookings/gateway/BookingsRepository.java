@@ -6,6 +6,7 @@ import de.hsos.swe.afairstart.bookings.entity.BookingExportDTO;
 import de.hsos.swe.afairstart.bookings.entity.BookingImportDTO;
 import de.hsos.swe.afairstart.bookings.entity.NeuralDAO;
 import de.hsos.swe.afairstart.devices.entity.Device;
+import de.hsos.swe.afairstart.devices.entity.DeviceType;
 import de.hsos.swe.afairstart.users.entity.User;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -23,13 +24,15 @@ public class BookingsRepository implements BookingService {
     private final EntityManager entityManager;
     private final NeuralGuesstimatorClient neuralGuesstimatorClient;
 
-    /*@Inject // NeuralGuesstimatorClient Mock-Implementation
-    public BookingsRepository(EntityManager entityManager) {
-        this(entityManager, BookingImportDTO::getIntendedDuration);
-    }*/
+    /*
+     * @Inject // NeuralGuesstimatorClient Mock-Implementation
+     * public BookingsRepository(EntityManager entityManager) {
+     * this(entityManager, BookingImportDTO::getIntendedDuration);
+     * }
+     */
 
     public BookingsRepository(EntityManager entityManager,
-        NeuralGuesstimatorClient neuralGuesstimatorClient) {
+            NeuralGuesstimatorClient neuralGuesstimatorClient) {
         this.entityManager = entityManager;
         this.neuralGuesstimatorClient = neuralGuesstimatorClient;
     }
@@ -45,6 +48,31 @@ public class BookingsRepository implements BookingService {
                     .setParameter("username", username).getResultStream();
         }
         return results.map(BookingExportDTO::new).collect(Collectors.toList());
+    }
+
+    public List<BookingExportDTO> list(String type, boolean date) {
+        Stream<Booking> results;
+        if (date == true && type != null) {
+            List<Long> devices = entityManager
+                    .createQuery("SELECT d.id FROM Device d WHERE d.type = :type", Long.class)
+                    .setParameter("type", DeviceType.valueOf(type)).getResultList();
+
+            results = entityManager
+                    .createQuery(
+                            "SELECT b FROM Booking b WHERE b.scheduledEnd >= :date AND b.deviceId IN :devices",
+                            Booking.class)
+                    .setParameter("date", LocalDateTime.now()).setParameter("devices", devices).getResultStream();
+            return results.map(BookingExportDTO::new).collect(Collectors.toList());
+        } else if (date == true && type == null) {
+            System.out.println("LD: " + LocalDateTime.now());
+            results = entityManager
+                    .createQuery(
+                            "SELECT b FROM Booking b WHERE b.scheduledStart <= :date AND b.scheduledEnd >= :date",
+                            Booking.class)
+                    .setParameter("date", LocalDateTime.now()).getResultStream();
+            return results.map(BookingExportDTO::new).collect(Collectors.toList());
+        }
+        return null;
     }
 
     private Optional<Booking> getBooking(Long id) {
@@ -63,20 +91,23 @@ public class BookingsRepository implements BookingService {
         booking.setUser(username);
 
         booking.setExpectedDuration(neuralGuesstimatorClient.getExpectedDuration(this.createNeuralDAO(booking)));
+
         long duration = Math.max(booking.getIntendedDuration(), booking.getExpectedDuration());
-        LocalDateTime endTime = booking.getScheduledStart().plusMinutes(duration);
-        Optional<Booking> existingBooking = entityManager
-                .createQuery(
-                        "SELECT b FROM Booking b WHERE b.scheduledStart >= :startTime AND b.scheduledStart <= :endTime",
-                        Booking.class)
-                .setParameter("startTime", booking.getScheduledStart())
-                .setParameter("endTime", endTime)
-                .getResultStream().findFirst();
-
-        if (existingBooking.isPresent()) {
-            return Optional.empty();
-        }
-
+        booking.setScheduledEnd(booking.getScheduledStart().plusMinutes(duration));
+        /*
+         * Optional<Booking> existingBooking = entityManager
+         * .createQuery(
+         * "SELECT b FROM Booking b WHERE b.scheduledStart >= :startTime AND b.scheduledStart <= :endTime"
+         * ,
+         * Booking.class)
+         * .setParameter("startTime", booking.getScheduledStart())
+         * .setParameter("endTime", booking.getScheduledEnd())
+         * .getResultStream().findFirst();
+         * 
+         * if (existingBooking.isPresent()) {
+         * return Optional.empty();
+         * }
+         */
         entityManager.persist(booking);
         return Optional.of(booking).map(BookingExportDTO::new);
 
@@ -126,8 +157,9 @@ public class BookingsRepository implements BookingService {
     }
 
     @Override
-    public NeuralDAO createNeuralDAO(Booking booking){
-        if(booking == null) return null;
+    public NeuralDAO createNeuralDAO(Booking booking) {
+        if (booking == null)
+            return null;
         Device device = entityManager.find(Device.class, booking.getDeviceId());
         User user = entityManager.find(User.class, booking.getUser());
         ArrayDeque<Long> bookings = user.getRecentBookingsDuration().get(device.getType());

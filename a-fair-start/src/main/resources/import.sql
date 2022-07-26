@@ -8,3 +8,5 @@ INSERT INTO device(id, type) VALUES (2, 0);
 
 INSERT INTO User_deviceExpericence(User_username, deviceExpericence, deviceExpericence_KEY) VALUES ('admin', 1,0);
 INSERT INTO User_deviceExpericence(User_username, deviceExpericence, deviceExpericence_KEY) VALUES ('admin', 1,1);
+INSERT INTO User_deviceExpericence(User_username, deviceExpericence, deviceExpericence_KEY) VALUES ('user', 1,0);
+INSERT INTO User_deviceExpericence(User_username, deviceExpericence, deviceExpericence_KEY) VALUES ('user', 1,1);

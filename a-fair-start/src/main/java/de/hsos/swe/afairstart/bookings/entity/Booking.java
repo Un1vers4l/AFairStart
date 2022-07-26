@@ -23,6 +23,15 @@ public class Booking {
     private Long expectedDuration;
     private LocalDateTime actualStart;
     private Long actualDuration;
+    private LocalDateTime scheduledEnd;
+
+    public LocalDateTime getScheduledEnd() {
+        return scheduledEnd;
+    }
+
+    public void setScheduledEnd(LocalDateTime scheduledEnd) {
+        this.scheduledEnd = scheduledEnd;
+    }
 
     public long getId() {
         return id;

@@ -14,6 +14,11 @@ public class BookingExportDTO {
     private final Long expectedDuration;
     private final LocalDateTime actualStart;
     private final Long actualDuration;
+    private final LocalDateTime scheduledEnd;
+
+    public LocalDateTime getScheduledEnd() {
+        return scheduledEnd;
+    }
 
     public BookingExportDTO(Booking entity) {
         this.id = entity.getId();
@@ -24,6 +29,7 @@ public class BookingExportDTO {
         this.expectedDuration = entity.getExpectedDuration();
         this.actualStart = entity.getActualStart();
         this.actualDuration = entity.getActualDuration();
+        this.scheduledEnd = entity.getScheduledEnd();
     }
 
     public long getId() {
@@ -71,4 +77,5 @@ public class BookingExportDTO {
                 ", actualDuration=" + actualDuration +
                 '}';
     }
+
 }
