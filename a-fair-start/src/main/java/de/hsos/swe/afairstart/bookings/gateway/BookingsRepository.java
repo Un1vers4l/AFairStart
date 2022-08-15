@@ -115,7 +115,7 @@ public class BookingsRepository implements BookingService {
             if (user != null) {
                 Device device = entityManager.find(Device.class, booking.getDeviceId());
                 if (device != null) {
-                    user.pushBooking(booking.getActualDuration(), device.getType());
+                    user.pushBooking(this.calculateTime(id), device.getType());
                 }
             }
             entityManager.merge(booking);
@@ -130,9 +130,21 @@ public class BookingsRepository implements BookingService {
         if(booking == null) return null;
         Device device = entityManager.find(Device.class, booking.getDeviceId());
         User user = entityManager.find(User.class, booking.getUser());
-        ArrayDeque<Long> bookings = user.getRecentBookingsDuration().get(device.getType());
+        ArrayDeque<Double> bookings = user.getRecentBookingsDuration().get(device.getType());
         Long level = user.getDeviceExpericence().get(device.getType());
         NeuralDAO neuralDAO = new NeuralDAO(device.getType(), level, bookings, booking.getIntendedDuration());
         return neuralDAO;
+    }
+
+    private Double calculateTime(Long id){
+        Booking booking = getBooking(id).orElse(null);
+        if(booking == null) return null;
+        double buffer = 1;
+        Long expected = booking.getExpectedDuration();
+        Long actual = booking.getActualDuration();
+        if(expected != null && actual != null && Long.compare(expected, Long.valueOf(0)) != 0) {
+            buffer = (actual.doubleValue()/expected.doubleValue());
+        }
+        return buffer;
     }
 }

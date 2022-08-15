@@ -13,7 +13,7 @@ public class UserExportDTO {
 
     private final String name;
     private Map<DeviceType, Long> deviceExpericence = new HashMap<>();
-    private Map<DeviceType, ArrayDeque<Long>> recentBookingsDuration = new HashMap<>();
+    private Map<DeviceType, ArrayDeque<Double>> recentBookingsDuration = new HashMap<>();
 
     public UserExportDTO(User user) {
         this.username = user.getUsername();
@@ -23,7 +23,7 @@ public class UserExportDTO {
         this.recentBookingsDuration = user.getRecentBookingsDuration();
     }
 
-    public Map<DeviceType, ArrayDeque<Long>> getRecentBookingsDuration() {
+    public Map<DeviceType, ArrayDeque<Double>> getRecentBookingsDuration() {
         return recentBookingsDuration;
     }
 
