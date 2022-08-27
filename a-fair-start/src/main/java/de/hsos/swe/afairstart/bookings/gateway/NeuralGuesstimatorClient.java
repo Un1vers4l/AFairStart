@@ -1,12 +1,8 @@
 package de.hsos.swe.afairstart.bookings.gateway;
 
-import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
-
 import java.io.File;
 import java.util.ArrayDeque;
 import java.util.Iterator;
-import java.util.Map;
-import java.util.Optional;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -16,10 +12,8 @@ import org.deeplearning4j.nn.multilayer.MultiLayerNetwork;
 import org.nd4j.linalg.api.ndarray.INDArray;
 import org.nd4j.linalg.factory.Nd4j;
 
-import de.hsos.swe.afairstart.bookings.entity.Booking;
 import de.hsos.swe.afairstart.bookings.entity.NeuralDAO;
 import de.hsos.swe.afairstart.devices.entity.DeviceType;
-import de.hsos.swe.afairstart.users.entity.UserExportDTO;
 import de.hsos.swe.afairstart.users.gateway.UsersRepository;
 
 /**
@@ -36,7 +30,7 @@ public class NeuralGuesstimatorClient {
     public Long getExpectedDuration(NeuralDAO neuralDAO){
         long intendedDuration = neuralDAO.intendedDuration;
         long level = neuralDAO.level;
-        ArrayDeque<Long> recentBookings = neuralDAO.recentBookings;
+        ArrayDeque<Double> recentBookings = neuralDAO.recentBookings;
         DeviceType device = neuralDAO.device;
 
         String path = "src/main/java/de/hsos/swe/afairstart/bookings/gateway/models/" + device + "/" + level + ".h5";
@@ -47,7 +41,7 @@ public class NeuralGuesstimatorClient {
                 kerasModel.getAbsolutePath(), false);
             int inputs = 6;
             INDArray features = Nd4j.zeros(inputs, inputs);
-            Iterator<Long> it = recentBookings.iterator();
+            Iterator<Double> it = recentBookings.iterator();
             for(int i = 0; i < inputs-1; i++){
                 if(it.hasNext()){
                     features.putScalar(new int[] {i}, it.next());

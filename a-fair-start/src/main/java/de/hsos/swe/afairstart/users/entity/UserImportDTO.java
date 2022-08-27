@@ -14,7 +14,6 @@ public class UserImportDTO {
     private String role = "user";
 
     private String name;
-    private Map<DeviceType, Long> deviceExpericence = new HashMap<>();
 
     public String getUsername() {
         return username;
@@ -51,15 +50,8 @@ public class UserImportDTO {
         this.name = name;
     }
 
-    public Map<DeviceType, Long> getDeviceExpericence() {
-        return deviceExpericence;
-    }
-
-    public void setDeviceExpericence(Map<DeviceType, Long> deviceExpericence) {
-        this.deviceExpericence = deviceExpericence;
-    }
-
     public User toEntity() {
+        Map<DeviceType, Long> deviceExpericence = new HashMap<>();
         User user = new User();
         user.setUsername(username);
         user.setPassword(password);

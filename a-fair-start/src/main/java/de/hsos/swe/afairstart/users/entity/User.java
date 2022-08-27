@@ -37,18 +37,24 @@ public class User {
     private static final int SIZE = 5;
 
     @ElementCollection(fetch = FetchType.EAGER)
-    private Map<DeviceType, ArrayDeque<Long>> recentBookingsDuration = new HashMap<>();
+    private Map<DeviceType, ArrayDeque<Double>> recentBookingsDuration = new HashMap<>();
 
-    public void pushBooking(Long actualDuration, DeviceType type) {
+    public void pushBooking(double actualDuration, DeviceType type) {
         if (recentBookingsDuration.containsKey(type)) {
-            ArrayDeque<Long> arrayDeque = recentBookingsDuration.get(type);
+            ArrayDeque<Double> arrayDeque = recentBookingsDuration.get(type);
             if (arrayDeque.size() >= SIZE) {
                 arrayDeque.pollLast();
             }
             arrayDeque.offerFirst(actualDuration);
+            boolean neuesLevel = true;
+            for(double zahl : arrayDeque){
+                if(zahl > 0.45) neuesLevel = false;
+            }
+            Long deviceLevel = getDeviceExpericence().get(type);
+            if(neuesLevel) this.setDeviceExpericence(type, deviceLevel++);
             recentBookingsDuration.replace(type, arrayDeque);
         } else {
-            ArrayDeque<Long> bookingsDeque = new ArrayDeque<>();
+            ArrayDeque<Double> bookingsDeque = new ArrayDeque<>();
             bookingsDeque.offerFirst(actualDuration);
             recentBookingsDuration.putIfAbsent(type, bookingsDeque);
         }
@@ -90,16 +96,17 @@ public class User {
         return deviceExpericence;
     }
 
+    public void setDeviceExpericence(DeviceType type, Long level){
+        Long currentLevel = this.deviceExpericence.get(type);
+        currentLevel = level;
+    }
+
     public void setDeviceExpericence(Map<DeviceType, Long> deviceExpericence) {
         this.deviceExpericence = deviceExpericence;
     }
 
-    public Map<DeviceType, ArrayDeque<Long>> getRecentBookingsDuration() {
+    public Map<DeviceType, ArrayDeque<Double>> getRecentBookingsDuration() {
         return recentBookingsDuration;
-    }
-
-    public void setRecentBookingsDuration(Map<DeviceType, ArrayDeque<Long>> recentBookingsDuration) {
-        this.recentBookingsDuration = recentBookingsDuration;
     }
 
     public static int getSize() {
