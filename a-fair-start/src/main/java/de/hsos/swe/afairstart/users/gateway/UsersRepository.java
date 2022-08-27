@@ -80,10 +80,10 @@ public class UsersRepository implements UserService {
     }
 
     @Override
-    public Optional<UserExportDTO> update(String username, DeviceExperienceDTO experienceDTO){
+    public Optional<UserExportDTO> update(String username, DeviceExperienceDTO experienceDTO) {
         User user = getUser(username).orElse(null);
         if (user != null) {
-            user.getDeviceExpericence().put(experienceDTO.getType(), experienceDTO.getLevel());   
+            user.getDeviceExpericence().put(experienceDTO.getType(), experienceDTO.getLevel());
             return Optional.of(entityManager.merge(user)).map(UserExportDTO::new);
         } else {
             return Optional.empty();

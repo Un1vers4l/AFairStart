@@ -59,7 +59,7 @@ public class BookingsRepository implements BookingService {
 
             results = entityManager
                     .createQuery(
-                            "SELECT b FROM Booking b WHERE b.scheduledEnd >= :date AND b.deviceId IN :devices",
+                            "SELECT b FROM Booking b WHERE b.expectedEnd >= :date AND b.deviceId IN :devices",
                             Booking.class)
                     .setParameter("date", LocalDateTime.now()).setParameter("devices", devices).getResultStream();
             return results.map(BookingExportDTO::new).collect(Collectors.toList());
@@ -67,7 +67,7 @@ public class BookingsRepository implements BookingService {
             System.out.println("LD: " + LocalDateTime.now());
             results = entityManager
                     .createQuery(
-                            "SELECT b FROM Booking b WHERE b.scheduledStart <= :date AND b.scheduledEnd >= :date",
+                            "SELECT b FROM Booking b WHERE b.scheduledStart <= :date AND b.expectedEnd >= :date",
                             Booking.class)
                     .setParameter("date", LocalDateTime.now()).getResultStream();
             return results.map(BookingExportDTO::new).collect(Collectors.toList());
@@ -90,10 +90,12 @@ public class BookingsRepository implements BookingService {
         Booking booking = importDTO.toEntity();
         booking.setUser(username);
 
+        booking.setScheduledEnd(booking.getScheduledStart().plusMinutes(booking.getIntendedDuration()));
+
         booking.setExpectedDuration(neuralGuesstimatorClient.getExpectedDuration(this.createNeuralDAO(booking)));
 
         long duration = Math.max(booking.getIntendedDuration(), booking.getExpectedDuration());
-        booking.setScheduledEnd(booking.getScheduledStart().plusMinutes(duration));
+        booking.setExpectedEnd(booking.getScheduledStart().plusMinutes(duration));
         /*
          * Optional<Booking> existingBooking = entityManager
          * .createQuery(
@@ -101,7 +103,7 @@ public class BookingsRepository implements BookingService {
          * ,
          * Booking.class)
          * .setParameter("startTime", booking.getScheduledStart())
-         * .setParameter("endTime", booking.getScheduledEnd())
+         * .setParameter("endTime", booking.getexpectedEnd())
          * .getResultStream().findFirst();
          * 
          * if (existingBooking.isPresent()) {
@@ -129,6 +131,7 @@ public class BookingsRepository implements BookingService {
         Booking booking = getBooking(id).orElse(null);
         if (booking != null && booking.getActualStart() == null) {
             booking.setActualStart(LocalDateTime.now());
+            booking.setLoggedOn(true);
             entityManager.merge(booking);
             return true;
         } else {
@@ -149,6 +152,7 @@ public class BookingsRepository implements BookingService {
                     user.pushBooking(booking.getActualDuration(), device.getType());
                 }
             }
+            booking.setDone(true);
             entityManager.merge(booking);
             return true;
         } else {

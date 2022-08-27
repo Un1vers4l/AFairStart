@@ -23,7 +23,26 @@ public class Booking {
     private Long expectedDuration;
     private LocalDateTime actualStart;
     private Long actualDuration;
+    private LocalDateTime expectedEnd;
     private LocalDateTime scheduledEnd;
+    private boolean loggedOn;
+    private boolean done;
+
+    public boolean isLoggedOn() {
+        return loggedOn;
+    }
+
+    public void setLoggedOn(boolean loggedOn) {
+        this.loggedOn = loggedOn;
+    }
+
+    public boolean isDone() {
+        return done;
+    }
+
+    public void setDone(boolean done) {
+        this.done = done;
+    }
 
     public LocalDateTime getScheduledEnd() {
         return scheduledEnd;
@@ -31,6 +50,14 @@ public class Booking {
 
     public void setScheduledEnd(LocalDateTime scheduledEnd) {
         this.scheduledEnd = scheduledEnd;
+    }
+
+    public LocalDateTime getExpectedEnd() {
+        return expectedEnd;
+    }
+
+    public void setExpectedEnd(LocalDateTime expectedEnd) {
+        this.expectedEnd = expectedEnd;
     }
 
     public long getId() {

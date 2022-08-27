@@ -14,10 +14,37 @@ public class BookingExportDTO {
     private final Long expectedDuration;
     private final LocalDateTime actualStart;
     private final Long actualDuration;
-    private final LocalDateTime scheduledEnd;
+    private final LocalDateTime expectedEnd;
+    private LocalDateTime scheduledEnd;
+    private boolean loggedOn;
+    private boolean done;
+
+    public boolean isLoggedOn() {
+        return loggedOn;
+    }
+
+    public void setLoggedOn(boolean loggedOn) {
+        this.loggedOn = loggedOn;
+    }
+
+    public boolean isDone() {
+        return done;
+    }
+
+    public void setDone(boolean done) {
+        this.done = done;
+    }
 
     public LocalDateTime getScheduledEnd() {
         return scheduledEnd;
+    }
+
+    public void setScheduledEnd(LocalDateTime scheduledEnd) {
+        this.scheduledEnd = scheduledEnd;
+    }
+
+    public LocalDateTime getexpectedEnd() {
+        return expectedEnd;
     }
 
     public BookingExportDTO(Booking entity) {
@@ -29,7 +56,10 @@ public class BookingExportDTO {
         this.expectedDuration = entity.getExpectedDuration();
         this.actualStart = entity.getActualStart();
         this.actualDuration = entity.getActualDuration();
+        this.expectedEnd = entity.getExpectedEnd();
         this.scheduledEnd = entity.getScheduledEnd();
+        this.loggedOn = entity.isLoggedOn();
+        this.done = entity.isDone();
     }
 
     public long getId() {
