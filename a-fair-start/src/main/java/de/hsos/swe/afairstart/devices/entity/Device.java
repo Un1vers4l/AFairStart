@@ -3,13 +3,14 @@ package de.hsos.swe.afairstart.devices.entity;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+
 import java.util.Objects;
 
 @Entity
 public class Device {
 
     @Id
-    @GeneratedValue(generator = "device_seq")
+    @GeneratedValue(generator = "deviceIdSequence")
     private Long id;
     private DeviceType type;
 

@@ -4,6 +4,12 @@ public class DeviceImportDTO {
 
     private DeviceType type;
 
+    public DeviceImportDTO() { }
+
+    public DeviceImportDTO(DeviceType type) {
+        this.type = type;
+    }
+
     public DeviceType getType() {
         return type;
     }
